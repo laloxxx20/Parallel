@@ -26,24 +26,19 @@ int main(int argc, char** argv) {
 
   int counter = 0;
   int s_rank = (rank + 1) % 2;
-  if(rank == 0)
-    MPI_Send(&counter, 1, MPI_INT, 1, 0, MPI_COMM_WORLD);
-
   while (counter < pin_pong_cycle) 
   {
     cout<<"rank: "<<rank<<endl;
-    counter++;
-    if( rank % 2 == 0 ){
-      MPI_Recv(&counter, 1, MPI_INT, s_rank, 0, MPI_COMM_WORLD,
-               MPI_STATUS_IGNORE);
+    if( counter % 2 == rank ) 
+    {
+      counter++;
       MPI_Send(&counter, 1, MPI_INT, s_rank, 0, MPI_COMM_WORLD);
       cout<<rank<<" sent counter "<<counter<<" to process "<<s_rank<<endl;
-    } 
-    else{
+    } else 
+    {
       MPI_Recv(&counter, 1, MPI_INT, s_rank, 0, MPI_COMM_WORLD,
                MPI_STATUS_IGNORE);
       cout<<rank<<" received counter "<<counter<<" from process "<<s_rank<<endl;      
-      MPI_Send(&counter, 1, MPI_INT, s_rank, 0, MPI_COMM_WORLD);
     }
   }
   MPI_Finalize();
