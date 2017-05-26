@@ -44,14 +44,7 @@ void printstat(int rank, int iter, char *txt, double *la, int n) {
     printf("%6.3lf>\n", la[n-1]);
 }
 
-void MPI_Pairwise_Exchange(int localn, double *locala, int sendrank, int recvrank,
-                           MPI_Comm comm) {
-
-    /*
-     * the sending rank just sends the data and waits for the results;
-     * the receiving rank receives it, sorts the combined data, and returns
-     * the correct half of the data.
-     */
+void MPI_Pairwise_Exchange(int localn, double *locala, int sendrank, int recvrank, MPI_Comm comm) {
     int rank;
     double remote[localn];
     double all[2*localn];
